@@ -42,8 +42,8 @@ export const GlassCard: React.FC<GlassCardProps> = ({
 
     // Background fill opacity based on variant
     const fillColors = variant === 'primary'
-        ? ['rgba(30, 30, 30, 0.4)', 'rgba(30, 30, 30, 0.2)'] as const
-        : ['rgba(30, 30, 30, 0.3)', 'rgba(30, 30, 30, 0.1)'] as const;
+        ? ['rgba(33, 33, 46, 0.85)', 'rgba(33, 33, 46, 0.65)'] as const // #21212E base
+        : ['rgba(33, 33, 46, 0.6)', 'rgba(33, 33, 46, 0.4)'] as const;
 
     return (
         <View style={[styles.container, { borderRadius: radius }, shadows.glass, style]} {...props}>

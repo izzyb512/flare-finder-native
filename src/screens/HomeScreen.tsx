@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { LinearGradient } from 'expo-linear-gradient';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { StatsCard, WeeklySchedule, FooterNav, LogMealButton, FutureSelfCard, HeatmapCalendar } from '../components/home';
+import { StatsCard, FooterNav, LogMealButton, FutureSelfCard, HeatmapCalendar } from '../components/home';
 import { colors, typography, spacing, borderRadius } from '../theme';
 import { Settings } from 'lucide-react-native';
 
@@ -35,95 +34,107 @@ const HomeScreen: React.FC = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView
-                contentContainerStyle={styles.scrollContent}
-                showsVerticalScrollIndicator={false}
-            >
-                {/* Header */}
-                <View style={styles.header}>
-                    <View>
-                        <Text style={styles.greetingTitle}>Hi, {userName}</Text>
-                        <Text style={styles.dateText}>{formattedDate}</Text>
+        <ImageBackground
+            source={require('../../assets/background.jpg')}
+            style={styles.backgroundImage}
+            resizeMode="cover"
+        >
+            <View style={styles.overlay} />
+            <SafeAreaView style={styles.container}>
+                <ScrollView
+                    contentContainerStyle={styles.contentContainer}
+                    showsVerticalScrollIndicator={false}
+                >
+                    {/* Header */}
+                    <View style={styles.header}>
+                        <View>
+                            <Text style={styles.greetingTitle}>Hi, {userName}</Text>
+                            <Text style={styles.dateText}>{formattedDate}</Text>
+                        </View>
+                        <TouchableOpacity
+                            style={styles.settingsButton}
+                            onPress={() => navigation.navigate('Settings')}
+                        >
+                            <Settings color={colors.foreground} size={24} />
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                        style={styles.settingsButton}
-                        onPress={() => navigation.navigate('Settings')}
-                    >
-                        <Settings color={colors.foreground} size={24} />
-                    </TouchableOpacity>
-                </View>
 
-                {/* Stats Card */}
-                <View style={styles.statsContainer}>
-                    <StatsCard
-                        calories={1850}
-                        caloriesGoal={2500}
-                        protein={120}
-                        proteinGoal={180}
-                        fat={45}
-                        fatGoal={80}
-                        carbs={160}
-                        carbsGoal={250}
-                    />
-                </View>
-
-                {/* Weighted Heatmap (Replaces WeeklySchedule) */}
-                <View style={styles.section}>
-                    <HeatmapCalendar />
-                </View>
-
-                {/* Messages Section */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Messages</Text>
-
-                    {/* Log Meal Button */}
-                    <LogMealButton onPress={handleLogPress} />
-                </View>
-
-                {/* Future Self / Today */}
-                <View style={styles.section}>
-                    <View style={styles.pillContainer}>
-                        <Text style={styles.pillText}>TODAY</Text>
+                    {/* Stats Card */}
+                    <View style={styles.statsContainer}>
+                        <StatsCard
+                            caloriesConsumed={1850}
+                            caloriesTarget={2500}
+                            proteinConsumed={120}
+                            proteinTarget={180}
+                            fatsConsumed={45}
+                            fatsTarget={80}
+                            carbsConsumed={160}
+                            carbsTarget={250}
+                        />
                     </View>
-                    <FutureSelfCard
-                        message="Great start to the week! Keep hitting those protein targets and you'll see progress in no time."
-                        imageUrl="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-                    />
-                </View>
 
-                {/* Spacing for footer */}
-                <View style={{ height: 100 }} />
-            </ScrollView>
+                    {/* Weighted Heatmap (Replaces WeeklySchedule) */}
+                    <View style={styles.section}>
+                        <HeatmapCalendar />
+                    </View>
 
-            <FooterNav
-                activeTab={activeTab}
-                onTabPress={setActiveTab}
-                onLogPress={handleLogPress}
-            />
-        </SafeAreaView>
+                    {/* Messages Section */}
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Messages</Text>
+
+                        {/* Log Meal Button */}
+                        <LogMealButton onPress={handleLogPress} />
+                    </View>
+
+                    {/* Future Self / Today */}
+                    <View style={styles.section}>
+                        <View style={styles.pillContainer}>
+                            <Text style={styles.pillText}>TODAY</Text>
+                        </View>
+                        <FutureSelfCard
+                            message="Great start to the week! Keep hitting those protein targets and you'll see progress in no time."
+                            imageUrl="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                        />
+                    </View>
+
+                </ScrollView>
+
+                {/* Floating Footer Nav */}
+                <FooterNav
+                    activeTab={activeTab}
+                    onTabPress={setActiveTab}
+                    onLogPress={handleLogPress}
+                />
+            </SafeAreaView>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: '#1d1d1d', // Dark mask color
+        opacity: 0.85, // Adjust opacity to make image fainter/stronger
+    },
     container: {
         flex: 1,
-        backgroundColor: colors.background,
+        // Removed backgroundColor to let image show through
     },
-    scrollView: {
-        flex: 1,
-    },
-    scrollContent: {
-        paddingHorizontal: spacing[6],
-        paddingBottom: 150, // Space for footer nav
+    contentContainer: {
+        paddingBottom: 100, // Space for the floating footer
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: spacing[6],
-        marginTop: spacing[4], // Added top spacing
-        paddingHorizontal: spacing[1],
+        marginTop: spacing[8], // Adjusted top margin
+        paddingHorizontal: spacing[6],
     },
     settingsButton: {
         padding: spacing[2],
@@ -144,10 +155,12 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     statsContainer: {
-        marginBottom: spacing[8], // Added container for StatsCard spacing
+        marginBottom: spacing[8],
+        paddingHorizontal: spacing[6], // Fix width alignment
     },
     section: {
-        marginBottom: spacing[8],
+        marginBottom: spacing[6],
+        paddingHorizontal: spacing[6],
     },
     sectionTitle: {
         fontSize: typography.fontSize.lg,

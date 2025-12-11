@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     blurContainer: {
-        backgroundColor: 'rgba(10, 10, 10, 0.85)', // Deep dark glass
+        backgroundColor: 'rgba(33, 33, 46, 0.85)', // #21212E - matches card opacity
     },
     navContent: {
         flexDirection: 'row',
