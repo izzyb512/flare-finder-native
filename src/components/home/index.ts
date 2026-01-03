@@ -4,3 +4,4 @@ export { FooterNav } from './FooterNav';
 export { LogMealButton } from './LogMealButton';
 export { FutureSelfCard } from './FutureSelfCard';
 export { HeatmapCalendar } from './HeatmapCalendar';
+export { WeeklyDateSelector } from './WeeklyDateSelector';
