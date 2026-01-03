@@ -34,10 +34,14 @@ export const WeeklyDateSelector: React.FC<WeeklyDateSelectorProps> = ({ onDateSe
         return dates;
     }, []);
 
+    const normalizeDate = (d: Date) => {
+        const newDate = new Date(d);
+        newDate.setHours(0, 0, 0, 0);
+        return newDate;
+    };
+
     const isSameDay = (d1: Date, d2: Date) => {
-        return d1.getDate() === d2.getDate() &&
-            d1.getMonth() === d2.getMonth() &&
-            d1.getFullYear() === d2.getFullYear();
+        return normalizeDate(d1).getTime() === normalizeDate(d2).getTime();
     };
 
     // Scroll to center on mount
@@ -70,6 +74,7 @@ export const WeeklyDateSelector: React.FC<WeeklyDateSelectorProps> = ({ onDateSe
             >
                 {weekDates.map((date, index) => {
                     const isSelected = isSameDay(date, selectedDate);
+                    const isPast = normalizeDate(date) < normalizeDate(new Date());
 
                     return (
                         <TouchableOpacity
@@ -102,24 +107,39 @@ export const WeeklyDateSelector: React.FC<WeeklyDateSelectorProps> = ({ onDateSe
                                 </View>
                             )}
 
-                            {/* Border Overlay */}
-                            <View
-                                style={[
-                                    styles.layer,
-                                    styles.borderLayer,
-                                    { borderRadius: borderRadius['3xl'] }
-                                ]}
-                            />
+                            {/* Border Overlay - Shown if NOT Past (Future or Today) */}
+                            {!isPast && (
+                                <View
+                                    style={[
+                                        styles.layer,
+                                        styles.borderLayer,
+                                        { borderRadius: borderRadius['3xl'] }
+                                    ]}
+                                />
+                            )}
 
                             {/* Content */}
                             <View style={styles.contentParams}>
-                                {/* Checkmark Icon */}
-                                <Check
-                                    size={16}
-                                    color="#FFFFFF"
-                                    strokeWidth={3}
-                                    style={{ marginBottom: 4 }}
-                                />
+                                {/* Checkmark Icon (Past) OR Spacer (Future/Today) */}
+                                {isPast ? (
+                                    <Check
+                                        size={16}
+                                        color="#FFFFFF"
+                                        strokeWidth={3}
+                                        style={{ marginBottom: 4 }}
+                                    />
+                                ) : (
+                                    <View style={{ height: 20, marginBottom: 4, justifyContent: 'center', alignItems: 'center' }}>
+                                        <View style={{
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: 5,
+                                            borderWidth: 1.5,
+                                            borderColor: '#FFFFFF',
+                                            opacity: 0.7
+                                        }} />
+                                    </View>
+                                )}
 
                                 <Text style={[
                                     styles.dayText,

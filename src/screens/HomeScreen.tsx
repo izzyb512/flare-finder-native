@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useVideoPlayer, VideoView } from 'expo-video';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { StatsCard, FooterNav, LogMealButton, FutureSelfCard, HeatmapCalendar, WeeklyDateSelector } from '../components/home';
 import { colors, typography, spacing, borderRadius } from '../theme';
 import { Settings } from 'lucide-react-native';
 
 // Video source for background
-const videoSource = require('../../assets/LOOPED BACKGROUND.mp4');
+const backgroundImage = require('../../assets/night-landscape.jpg');
+const characterSource = require('../../assets/character.png');
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 type TabId = 'home' | 'insights' | 'stats';
@@ -22,18 +22,6 @@ type TabId = 'home' | 'insights' | 'stats';
 const HomeScreen: React.FC = () => {
     const navigation = useNavigation<HomeScreenNavigationProp>();
     const [activeTab, setActiveTab] = useState<TabId>('home');
-
-    // Create video player
-    const player = useVideoPlayer(videoSource);
-
-    // Enforce playback settings on mount/player change
-    useEffect(() => {
-        if (player) {
-            player.loop = true;
-            player.muted = true;
-            player.play();
-        }
-    }, [player]);
 
     // Mock data matching original screenshot
     const userName = 'Guest';
@@ -50,7 +38,7 @@ const HomeScreen: React.FC = () => {
     };
 
     // Web-specific style to force full viewport coverage
-    const videoStyle = Platform.select({
+    const backgroundStyle = Platform.select({
         web: {
             position: 'fixed',
             top: 0,
@@ -67,11 +55,10 @@ const HomeScreen: React.FC = () => {
     return (
         <View style={styles.rootContainer}>
             <View style={StyleSheet.absoluteFill}>
-                <VideoView
-                    player={player}
-                    style={videoStyle}
-                    contentFit="cover"
-                    nativeControls={false}
+                <Image
+                    source={backgroundImage}
+                    style={backgroundStyle}
+                    resizeMode="cover"
                 />
             </View>
             <SafeAreaView style={styles.safeArea}>
@@ -137,6 +124,21 @@ const HomeScreen: React.FC = () => {
                         </View>
                     )}
                 </ScrollView>
+
+                {/* Character Image - Positioned above footer */}
+                {activeTab === 'home' && (
+                    <View style={styles.characterContainer} pointerEvents="none">
+                        <Image
+                            source={characterSource}
+                            style={styles.characterImage}
+                        />
+                        {/* Overlay for darkening */}
+                        <Image
+                            source={characterSource}
+                            style={[styles.characterImage, { position: 'absolute', tintColor: 'black', opacity: 0.25 }]}
+                        />
+                    </View>
+                )}
 
                 {/* Floating Footer Nav */}
                 <FooterNav
@@ -218,6 +220,19 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: 'rgba(255,255,255,0.3)',
         letterSpacing: 1.5,
+    },
+    characterContainer: {
+        position: 'absolute',
+        bottom: 90, // Positioned above the footer
+        alignSelf: 'center',
+        width: '90%', // Take up most horizontal space
+        height: 420,
+        zIndex: 5,
+    },
+    characterImage: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain',
     },
 });
 
