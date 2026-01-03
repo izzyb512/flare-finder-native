@@ -92,7 +92,7 @@ export const WeeklyDateSelector: React.FC<WeeklyDateSelectorProps> = ({ onDateSe
                             {/* Background Layer */}
                             {isSelected ? (
                                 <LinearGradient
-                                    colors={['#3B82F6', '#2563EB']} // Blue Gradient
+                                    colors={['#2D5B7F', '#1B364C']} // Custom Blue Gradient
                                     start={{ x: 0, y: 0 }}
                                     end={{ x: 1, y: 1 }}
                                     style={[styles.layer, { borderRadius: borderRadius['3xl'] }]}

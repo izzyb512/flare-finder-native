@@ -4,13 +4,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { SpriteSheet } from '../components/ui/SpriteSheet';
 import { StatsCard, FooterNav, LogMealButton, FutureSelfCard, HeatmapCalendar, WeeklyDateSelector } from '../components/home';
 import { colors, typography, spacing, borderRadius } from '../theme';
 import { Settings } from 'lucide-react-native';
 
 // Video source for background
 const backgroundImage = require('../../assets/night-landscape.jpg');
-const characterSource = require('../../assets/character.png');
+const characterSource = require('../../assets/OTTO_IDLE_SPRITE.png');
+const shadowSource = require('../../assets/shadow.png');
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 type TabId = 'home' | 'insights' | 'stats';
@@ -125,18 +127,33 @@ const HomeScreen: React.FC = () => {
                     )}
                 </ScrollView>
 
-                {/* Character Image - Positioned above footer */}
+                {/* Character Video - Positioned above footer */}
                 {activeTab === 'home' && (
                     <View style={styles.characterContainer} pointerEvents="none">
                         <Image
-                            source={characterSource}
-                            style={styles.characterImage}
+                            source={shadowSource}
+                            style={{
+                                width: 400,
+                                height: 80,
+                                position: 'absolute',
+                                bottom: -45,
+                                opacity: 0.6,
+                                alignSelf: 'center'
+                            }}
+                            resizeMode="contain"
                         />
-                        {/* Overlay for darkening */}
-                        <Image
-                            source={characterSource}
-                            style={[styles.characterImage, { position: 'absolute', tintColor: 'black', opacity: 0.25 }]}
-                        />
+                        <View style={{ transform: [{ scale: 0.82 }], alignItems: 'center', justifyContent: 'center' }}>
+                            <SpriteSheet
+                                source={characterSource}
+                                columns={20}
+                                rows={19}
+                                frameWidth={512}
+                                frameHeight={512}
+                                fps={30}
+                                totalFrames={362}
+                                overlayColor="black" // 25% opacity default
+                            />
+                        </View>
                     </View>
                 )}
 
@@ -223,7 +240,7 @@ const styles = StyleSheet.create({
     },
     characterContainer: {
         position: 'absolute',
-        bottom: 90, // Positioned above the footer
+        bottom: 150, // Moved up to clear footer
         alignSelf: 'center',
         width: '90%', // Take up most horizontal space
         height: 420,

@@ -44,7 +44,7 @@ export const FooterNav: React.FC<FooterNavProps> = ({ activeTab, onTabPress, onL
                     style={styles.borderGradient}
                 >
                     <BlurView intensity={40} tint="dark" style={styles.blurContainer}>
-                        <View style={[styles.navContent, { paddingBottom: Math.max(insets.bottom, 10) }]}>
+                        <View style={[styles.navContent, { paddingBottom: Math.max(insets.bottom, 10) + 25 }]}>
 
                             {/* Left Side Tabs */}
                             <View style={styles.tabsContainer}>
@@ -85,15 +85,15 @@ export const FooterNav: React.FC<FooterNavProps> = ({ activeTab, onTabPress, onL
          Moved OUTSIDE the navBarContainer to avoid clipping
       */}
             <TouchableOpacity
-                style={[styles.fabButton, { bottom: Math.max(insets.bottom, 10) + 15 }]} // Adjust bottom to float correctly
+                style={[styles.fabButton, { bottom: Math.max(insets.bottom, 10) + 25 }]} // Adjust bottom to float correctly
                 onPress={onLogPress}
                 activeOpacity={0.8}
             >
                 <LinearGradient
-                    colors={['#2A2A2A', '#1A1A1A']} // Dark sleek look
+                    colors={['#2D5B7F', '#1B364C']} // Matches Active Date Card
                     style={styles.fabGradient}
                 >
-                    <Plus color="#FFF" size={32} strokeWidth={2.5} />
+                    <Plus color="#FFF" size={36} strokeWidth={2.5} />
                 </LinearGradient>
                 {/* Glow effect behind FAB */}
                 <View style={styles.fabGlow} />
@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: 12,
         paddingHorizontal: 30,
-        height: 80,
     },
     tabsContainer: {
         flexDirection: 'row',
@@ -163,9 +162,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 20,
         // bottom is set inline to account for insets
-        width: 72, // Increased size
-        height: 72, // Increased size
-        borderRadius: 36,
+        width: 80, // Increased size
+        height: 80, // Increased size
+        borderRadius: 40,
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: '#000',
