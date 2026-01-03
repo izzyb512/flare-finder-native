@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { SpriteSheet } from '../components/ui/SpriteSheet';
-import { StatsCard, FooterNav, LogMealButton, FutureSelfCard, HeatmapCalendar, WeeklyDateSelector } from '../components/home';
+import { StatsCard, FooterNav, LogMealButton, FutureSelfCard, HeatmapCalendar, WeeklyDateSelector, SpeechBubble } from '../components/home';
 import { colors, typography, spacing, borderRadius } from '../theme';
 import { Settings } from 'lucide-react-native';
 
@@ -157,6 +157,19 @@ const HomeScreen: React.FC = () => {
                     </View>
                 )}
 
+                {/* Speech Bubble - Positioned relative to character */}
+                {activeTab === 'home' && (
+                    <View style={{
+                        position: 'absolute',
+                        bottom: 500, // Moved down closer to character
+                        width: '100%',
+                        paddingHorizontal: spacing[6], // Match Header padding
+                        zIndex: 10
+                    }}>
+                        <SpeechBubble text="Ready to conquer the day? I'm here to help track your progress!" />
+                    </View>
+                )}
+
                 {/* Floating Footer Nav */}
                 <FooterNav
                     activeTab={activeTab}
@@ -185,7 +198,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: spacing[6],
+        marginBottom: spacing[1],
         marginTop: spacing[8], // Adjusted top margin
         paddingHorizontal: spacing[6],
     },
@@ -203,7 +216,7 @@ const styles = StyleSheet.create({
         letterSpacing: -0.5,
     },
     dateText: {
-        color: colors.mutedForeground,
+        color: 'rgba(255, 255, 255, 0.7)',
         fontSize: 15,
         fontWeight: '500',
     },

@@ -5,3 +5,4 @@ export { LogMealButton } from './LogMealButton';
 export { FutureSelfCard } from './FutureSelfCard';
 export { HeatmapCalendar } from './HeatmapCalendar';
 export { WeeklyDateSelector } from './WeeklyDateSelector';
+export * from './SpeechBubble';
